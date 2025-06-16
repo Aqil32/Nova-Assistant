@@ -28,7 +28,7 @@ Personal AI assistant that can browse web, open web and chat with you via voice.
 - MariaDB or MySQL server installed and running
 - Access to create databases and users
 
-## SQL Installation Commands
+# SQL Installation Commands
 
 ### 1. Connect to your MariaDB/MySQL server as root 
 ```bash
