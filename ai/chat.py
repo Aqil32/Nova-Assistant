@@ -3,13 +3,13 @@ import re
 import mysql.connector
 from datetime import datetime
 from ai.personality import get_persona, get_config
-from enhanced_system_control import NovaSystemControl  # Import the new system control
+from enhanced_system_control import NovaSystemControl 
 
 # Database configuration
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'nova_user',  # Change to your MariaDB username
-    'password': '2307054irsyad',  # Change to your MariaDB password
+    'password': 'admin',  # Change to your MariaDB password
     'database': 'nova_memory'
 }
 
