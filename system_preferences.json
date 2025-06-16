@@ -1,0 +1,10 @@
+{
+  "favorite_apps": {
+    "browser": "chrome",
+    "notepad": "notepad",
+    "calculator": "calc",
+    "file_manager": "explorer"
+  },
+  "default_search_engine": "https://www.google.com/search?q=",
+  "weather_location": "Kuala Lumpur, Malaysia"
+}

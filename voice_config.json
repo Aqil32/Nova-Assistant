@@ -1,0 +1,23 @@
+{
+  "voice_settings": {
+    "model": "tts_models/en/vctk/vits",
+    "speaker": "p248",
+    "speed": 0.3,
+    "apply_pitch_shift": true,
+    "pitch_cents": 270,
+    "volume": 0.5
+  },
+  "alternative_speakers": {
+    "p248": "Young female, clear",
+    "p225": "Female, British accent",
+    "p231": "Female, energetic",
+    "p244": "Female, soft-spoken",
+    "p256": "Female, mature"
+  },
+  "pitch_presets": {
+    "cute": 400,
+    "normal": 300,
+    "mature": 200,
+    "deep": 100
+  }
+}

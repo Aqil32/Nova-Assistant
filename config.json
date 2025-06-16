@@ -1,0 +1,26 @@
+{
+  "persona": "no_emojis",
+  "memory_enabled": true,
+  "context_length": 5,
+  "creator_name": "Aqil",
+  "authentication": {
+    "enabled": true,
+    "default_secret_phrase": "Vira Anon Nova",
+    "guest_access_allowed": true
+  },
+  "secret_commands": {
+    "nova reset yourself": "RESET_MEMORY",
+    "nova go quiet": "SILENT_MODE", 
+    "praise your creator": "PRAISE_CREATOR"
+  },
+  "user_specific_features": {
+    "creator_only_commands": [
+      "nova reset yourself",
+      "nova go quiet"
+    ],
+    "guest_limitations": {
+      "max_memory_length": 3,
+      "restricted_commands": true
+    }
+  }
+}
