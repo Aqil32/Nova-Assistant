@@ -22,7 +22,8 @@ Personal AI assistant that can browse web, open web and chat with you via voice.
 - ✅ Save the conversation to database
 - ✅ Zero-dependency local AI
 
-- # Database Setup for Nova
+
+# Database Setup for Nova
 
 ## Prerequisites
 - MariaDB or MySQL server installed and running
