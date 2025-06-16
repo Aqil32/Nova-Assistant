@@ -109,7 +109,7 @@ DB_CONFIG = {
 
 ## Security Notes
 
-⚠️ **Important**: Change the default password `'2307054irsyad'` to something more secure:
+⚠️ **Important**: Change the default password `'admin'` to something more secure:
 
 ```sql
 ALTER USER 'nova_user'@'localhost' IDENTIFIED BY 'your_secure_password_here';
