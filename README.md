@@ -295,4 +295,4 @@ Created by **Aqil** — first AI project, inspired by **JARVIS** and **Neuro-sam
 
 ## 📄 License
 
-MIT
+MIT — see [LICENSE](LICENSE) for full text.
