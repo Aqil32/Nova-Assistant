@@ -1,64 +1,94 @@
-# NOVA AI Assistant
+# NOVA AI Assistant 🤖
 
-## Overview
-Personal AI assistant that can browse web, open web and chat with you via voice.
+Personal AI assistant that can browse the web, open websites, and chat with you via voice.
 
 ## Features
-- 🌐 Web browsing
-- 🎤 Voice recognition
-- 💬 Natural language processing
-- 🖥️ System control (ALPHA)
 
-## Technologies
-- Python
-- Ollama
-- Mistral 7B
-- MariaDB
-- Coqui TTS
-- Whisper
+- 🌐 **Web browsing** — search Google, open websites, browse YouTube
+- 🎤 **Voice recognition** — 95% accuracy using OpenAI Whisper
+- 💬 **Natural conversation** — powered by Ollama + Mistral 7B
+- 👑 **Creator/Guest modes** — secret phrase authentication for creator privileges
+- 🖥️ **System control** — time/date, weather, app launching (creator only)
+- 👁️ **Computer vision** — screen analysis, OCR, screenshot capabilities
+- 🗣️ **Voice output** — Coqui TTS with anime-style voice (pitch-shifted)
+- 💾 **Conversation memory** — MariaDB/MySQL database storage
+- 🔮 **Multiple personas** — Neuro, Evil, No-emojis, and more
 
-## Achievements
-- ✅ 95% voice recognition accuracy using Whisper
-- ✅ Save the conversation to database
-- ✅ Zero-dependency local AI
+## Requirements
 
+- Python 3.10+
+- [Ollama](https://ollama.com) with Mistral 7B (`ollama pull mistral`)
+- MariaDB or MySQL (optional — falls back to in-memory)
+- FFmpeg (for audio playback)
+- SoX (for voice pitch shifting)
 
-# Database Setup for Nova
+## Quick Start
 
-## Prerequisites
-- MariaDB or MySQL server installed and running
-- Access to create databases and users
-
-# SQL Installation Commands
-
-### 1. Connect to your MariaDB/MySQL server as root 
 ```bash
-mysql -u root -p
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Set up database (optional)
+# See "Database Setup" section below
+
+# 3. Configure environment (optional)
+export NOVA_DB_PASSWORD="your_password"
+
+# 4. Run Nova!
+python app.py
 ```
 
-### 2. Create the Nova database
+## Authentication
+
+Nova uses a secret phrase system:
+- **Creator mode** — full access (system control, app launching, etc.)
+- **Guest mode** — limited to conversation, web search, YouTube
+
+Default secret phrase: `Vira Anon Nova`
+*(Change this on first run or by deleting `nova_auth.json`)*
+
+## Personas
+
+Switch Nova's personality in `config.json`:
+
+| Persona | File | Description |
+|---------|------|-------------|
+| `neuro` | `ai/personas/neuro.py` | Chaotic, unhinged, lovable disaster |
+| `evil` | `ai/personas/evil.py` | Darkly charismatic, dramatic villain |
+| `no_emojis` | `ai/personas/no_emojis.py` | Sassy streamer girl, no emojis |
+
+## Configuration
+
+Edit `config.json`:
+
+```json
+{
+  "persona": "no_emojis",
+  "memory_enabled": true,
+  "context_length": 5,
+  "creator_name": "Aqil"
+}
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NOVA_DB_HOST` | `localhost` | Database host |
+| `NOVA_DB_USER` | `nova_user` | Database user |
+| `NOVA_DB_PASSWORD` | *(empty)* | Database password |
+| `NOVA_DB_NAME` | `nova_memory` | Database name |
+
+## Database Setup
+
 ```sql
 CREATE DATABASE nova_memory;
-```
-
-### 3. Create a dedicated user for Nova
-```sql
-CREATE USER 'nova_user'@'localhost' IDENTIFIED BY 'admin';
-```
-
-### 4. Grant permissions to the Nova user
-```sql
+CREATE USER 'nova_user'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON nova_memory.* TO 'nova_user'@'localhost';
 FLUSH PRIVILEGES;
-```
 
-### 5. Switch to the Nova database
-```sql
 USE nova_memory;
-```
 
-### 6. Create the conversation memory table
-```sql
 CREATE TABLE IF NOT EXISTS conversation_memory (
     id INT AUTO_INCREMENT PRIMARY KEY,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -68,10 +98,7 @@ CREATE TABLE IF NOT EXISTS conversation_memory (
     nova_response TEXT,
     session_id VARCHAR(50) DEFAULT 'default'
 );
-```
 
-### 7. Create the memory context table for long-term memory
-```sql
 CREATE TABLE IF NOT EXISTS memory_context (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) DEFAULT 'Guest',
@@ -82,46 +109,46 @@ CREATE TABLE IF NOT EXISTS memory_context (
 );
 ```
 
-### 8. Verify table creation
-```sql
-SHOW TABLES;
-DESCRIBE conversation_memory;
-DESCRIBE memory_context;
-```
-
-### 9. Exit MySQL
-```sql
-EXIT;
-```
-
-## Configuration
-
-After running these commands, update your `chat.py` database configuration:
-
-```python
-DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'nova_user',
-    'password': '2307054irsyad',  # Change this to your chosen password
-    'database': 'nova_memory'
-}
-```
-
-## Security Notes
-
-⚠️ **Important**: Change the default password `'admin'` to something more secure:
-
-```sql
-ALTER USER 'nova_user'@'localhost' IDENTIFIED BY 'your_secure_password_here';
-```
-
-Then update the password in your `chat.py` file accordingly.
-
-## Testing the Connection
-
-You can test the database connection by running:
+Then set your password:
 ```bash
-mysql -u nova_user -p nova_memory
+export NOVA_DB_PASSWORD="your_password"
 ```
 
-Enter your password when prompted. If successful, you should see the MySQL prompt with the `nova_memory` database selected.
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Voice Input | OpenAI Whisper (small) |
+| Voice Output | Coqui TTS (VCTK) + SoX pitch shift |
+| AI Engine | Ollama + Mistral 7B |
+| Database | MariaDB / MySQL |
+| Vision | OpenCV + EasyOCR / Tesseract |
+| Audio | sounddevice + scipy |
+
+## Project Structure
+
+```
+Nova-Assistant/
+├── app.py                         # Main entry point
+├── auth.py                        # Creator/guest authentication
+├── config.json                    # Nova's configuration
+├── enhanced_system_control.py     # System control commands
+├── nova_vision.py                 # Computer vision module
+├── voice_config.json              # TTS voice settings
+├── requirements.txt               # Python dependencies
+├── ai/
+│   ├── chat.py                    # Core AI chat logic
+│   ├── personality.py             # Persona loading
+│   └── personas/
+│       ├── neuro.py               # Chaotic persona
+│       ├── evil.py                # Villain persona
+│       └── no_emojis.py           # No-emoji persona
+└── voice/
+    ├── recorder.py                # Audio recording + VAD
+    ├── stt.py                     # Speech-to-text (Whisper)
+    └── tts.py                     # Text-to-speech (Coqui)
+```
+
+## License
+
+MIT

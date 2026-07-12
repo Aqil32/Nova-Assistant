@@ -1,16 +1,17 @@
 import subprocess
 import re
+import os
 import mysql.connector
 from datetime import datetime
 from ai.personality import get_persona, get_config
 from enhanced_system_control import NovaSystemControl 
 
-# Database configuration
+# Database configuration — read from env with sensible defaults
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'nova_user',  # Change to your MariaDB username
-    'password': 'admin',  # Change to your MariaDB password
-    'database': 'nova_memory'
+    'host': os.getenv('NOVA_DB_HOST', 'localhost'),
+    'user': os.getenv('NOVA_DB_USER', 'nova_user'),
+    'password': os.getenv('NOVA_DB_PASSWORD', ''),
+    'database': os.getenv('NOVA_DB_NAME', 'nova_memory')
 }
 
 # In-memory fallback for when DB is unavailable
@@ -339,12 +340,34 @@ def query_ollama(prompt):
     # Build the chat input
     chat_input = f"""### System:\n{persona}\n\n{memory_context}\n### User:\n{prompt}\n\n### Nova:"""
 
+    # Check if Ollama is available first
+    try:
+        subprocess.run(
+            ["ollama", "--version"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "⚠️ Ollama is not installed or not running. Please install Ollama (ollama.com) and run 'ollama serve' first."
+
     # Query Ollama
-    result = subprocess.run(
-        ["ollama", "run", "mistral"],
-        input=chat_input.encode(),
-        stdout=subprocess.PIPE
-    )
+    try:
+        result = subprocess.run(
+            ["ollama", "run", "mistral"],
+            input=chat_input.encode(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=60
+        )
+    except subprocess.TimeoutExpired:
+        return "⏱️ Ollama took too long to respond. Try a simpler question or check if the model is loaded."
+    except Exception as e:
+        return f"❌ Error running Ollama: {str(e)}"
+
+    if result.returncode != 0:
+        error_msg = result.stderr.decode().strip() if result.stderr else "Unknown error"
+        return f"❌ Ollama error: {error_msg}"
 
     output = result.stdout.decode()
     response = extract_response(output)

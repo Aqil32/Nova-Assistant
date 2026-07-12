@@ -1,0 +1,41 @@
+# Audio / recording files
+*.wav
+*.mp3
+*.ogg
+*.flac
+temp_*.png
+nova_screenshot_*.png
+reply*.wav
+input.wav
+
+# Auth / credentials
+nova_auth.json
+.env
+*.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated during runtime
+system_preferences.json

@@ -1,0 +1,37 @@
+# Nova-Assistant Dependencies
+# Install: pip install -r requirements.txt
+
+# Speech-to-Text
+openai-whisper>=20231117
+
+# Text-to-Speech
+TTS>=0.21.0
+
+# Audio recording & processing
+sounddevice>=0.4.6
+scipy>=1.10.0
+
+# Deep learning
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# Database
+mysql-connector-python>=8.0.0
+
+# System monitoring (optional)
+psutil>=5.9.0
+
+# Image processing (optional — for vision module)
+opencv-python>=4.8.0
+pyautogui>=0.9.54
+Pillow>=10.0.0
+
+# OCR (optional — for vision module)
+pytesseract>=0.3.10
+easyocr>=1.7.0
+
+# WebSocket VAD (optional — for wake detection)
+webrtcvad>=2.0.10
+
+# NumPy
+numpy>=1.24.0
